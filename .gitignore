@@ -1,0 +1,15 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# C extensions
+*.so
+
+# Operating System - Mac OS X
+.DS_Store
+
+# ipynb checkpoints
+.ipynb_checkpoints
+
+# Notes to self
+todo.txt
