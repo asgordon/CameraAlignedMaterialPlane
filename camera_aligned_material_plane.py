@@ -7,7 +7,7 @@ import bpy
 bl_info = {
     "name": "Camera Aligned Material Plane",
     "author": "Andrew S. Gordon",
-    "version": (1,0),
+    "version": (1,1),
     "blender": (4,1,0),
     "location": "View3D > Tool Shelf > Object",
     "description": "Utility for aligning material-based image planes to the camera",
@@ -31,8 +31,8 @@ class AlignPlaneToCamera(bpy.types.Operator):
 def main(context):
     # Ensure we're in object mode
     bpy.ops.object.mode_set(mode='OBJECT')
-    # Assume the camera is named "Camera"
-    camera = bpy.data.objects['Camera']
+    # Assume the active camera is the target camera
+    camera = bpy.context.scene.camera
     # Assume the active object is the plane
     plane = bpy.context.active_object
     # Go for it
