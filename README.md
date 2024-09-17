@@ -1,5 +1,5 @@
 # Camera Aligned Material Plane
-A Blender add-on for aligning material-based image planes to a camera's viewport.
+A Blender add-on for importing an image plane with material properties, and aligning the plane to a virtual camera's viewport.
 
 ***Work-in-progress! Use at your own risk!***
 
@@ -9,18 +9,42 @@ In 3D modeling software such as Blender, an "image plane" is a 2D rectangle posi
 
 A "material plane" sets the material properties of the image plane (e.g., diffuse, specular, normal layers) to enable Physically Based Rendering, allowing the foreground object to interact with the synthetic lighting environment as if it were another 3D object in the scene. 
 
-A "camera aligned material plane" (CAMP) positions and rotates the plane to be flush and in the center of the virtual camera's viewport, with a virtual distance to the camera the same as the distance between the real-world world camera and the real-world foreground object, and the scale of the plane set to fill the virtual camera's entire field of view.
+A "Camera-Aligned Material Plane" (CAMP) positions and rotates the plane to be flush and in the center of the virtual camera's viewport, with a virtual distance to the camera the same as the distance between the real-world world camera and the real-world foreground object, and the scale of the plane set to fill the virtual camera's entire field of view.
 
 When positioned and scaled correctly, a CAMP appearing in a virtual camera retains the pixel resolution of the original real-world imagery, but where each pixel of the foreground object has been relit using Physically Based Rendering.
 
 ## Basic use
 
-This workflow was tested in Blender 4.1
+This workflow was tested in Blender 4.2
 
-1. Enable add-on "Import-Export: Import Images as Planes"
-1. Install add-on "camera_aligned_material_plane.py" from this repository.
-1. Import images planes into your scene.
-1. With the plane selected as the active object, select Object > Align Plane to Camera.
-1. Position the camera and plane's distance to camera as needed.
+1. Install add-on "camera_aligned_material_plane.py" from this repository
+1. Select the menu item File > Import > Camera-Aligned Material Plane
+1. Select a directory with image/movie textures and a valid properties.json file
+1. Position the camera, and adjust plane's distance to camera as needed
 
-This add-on operator does several things to a selected image plane: locks its rotation to the camera's rotation, parents it to the camera and locks its x and y local coordinates to 0, and uses drivers to scale the plane to fill the camera viewport regardless of its distance to the camera.
+When importing a valid CAMP directory, this add-on does several things.
+1. Creates an image mesh (plane) with a Principled BSDF shader node that uses the diffuse file as the texture
+1. Links the alpha of the BSDF node to an image texture node that uses the mask file
+1. Links the normal of the BSDF node to an image texture node that uses the normal file
+1. Sets the IOR of the BSDF shader to 1.0
+1. Sets the number of frames for the mask and normal textures to equal the diffuse texture (for movie textures), and auto-refresh to True
+1. Locks the plane's rotation to the camera's rotation
+1. Parents the plane to the camera and locks its x and y local coordinates to 0
+1. Adds drivers to scale the plane to fill the camera viewport, regardless of its distance (z) to the camera
+
+## properties.json
+
+A valid CAMP directory includes a properties.json file, such as this:
+```
+{
+    "version": "1.2", 
+    "type": "image", 
+    "name": "example1", 
+    "diffuse": "example1_diffuse.jpg", 
+    "mask": "example1_mask.jpg", 
+    "normal": "example1_normal.jpg"
+}
+```
+The "type" can be either "image" or "movie", and the referenced media files should be present in the directory. The "mask" and "normal" entries are optional, but "diffuse" is required. If shot in a flat/diffuse lighting environment, the original image/movie file can be used as the diffuse material.
+
+
