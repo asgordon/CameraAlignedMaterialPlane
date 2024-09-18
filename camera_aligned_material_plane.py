@@ -94,6 +94,9 @@ class ImportCamp(bpy.types.Operator, bpy_extras.io_utils.ImportHelper):
             material.node_tree.links.new(normal_node.outputs['Color'], normalmap_node.inputs['Color'])
             normal_node.location = self.offset(diffuse_node.location, (0,-800)) # down two row from diffuse
             normalmap_node.location = self.offset(normal_node.location, (300,0)) # right one column            
+        
+        # Add solidify modifier to prevent strong backlight from seeping through
+        plane.modifiers.new(name="Solidify", type='SOLIDIFY')
 
         # return plane
         return plane

@@ -28,6 +28,7 @@ When importing a valid CAMP directory, this add-on does several things.
 1. Links the normal of the BSDF node to an image texture node that uses the normal file
 1. Sets the IOR of the BSDF shader to 1.0
 1. Sets the number of frames for the mask and normal textures to equal the diffuse texture (for movie textures), and auto-refresh to True
+1. Adds a solidify modifier to the plane to prevent strong backlight from seeping through
 1. Locks the plane's rotation to the camera's rotation
 1. Parents the plane to the camera and locks its x and y local coordinates to 0
 1. Adds drivers to scale the plane to fill the camera viewport, regardless of its distance (z) to the camera
