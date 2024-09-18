@@ -97,6 +97,9 @@ class ImportCamp(bpy.types.Operator, bpy_extras.io_utils.ImportHelper):
         
         # Add solidify modifier to prevent strong backlight from seeping through
         plane.modifiers.new(name="Solidify", type='SOLIDIFY')
+        
+        # Set the name of the plane to match that in the properties.json 
+        plane.name = props['name']
 
         # return plane
         return plane
