@@ -28,22 +28,22 @@ When importing a valid CAMP directory, this add-on does several things.
 1. Links the normal of the BSDF node to an image texture node that uses the normal file
 1. Sets the IOR of the BSDF shader to 1.0
 1. Sets the number of frames for the mask and normal textures to equal the diffuse texture (for movie textures), and auto-refresh to True
-1. Adds a solidify modifier to the plane to prevent strong backlight from seeping through
-1. Locks the plane's rotation to the camera's rotation
-1. Parents the plane to the camera and locks its x and y local coordinates to 0
-1. Adds drivers to scale the plane to fill the camera viewport, regardless of its distance (z) to the camera
+1. Creates a child-of constraint between the plane and the camera for location and rotation, and clears the inverse transform
+1. Adds an empty object to the scene to animate the distance of the plane to the camera, and parents this empty object to the camera
+1. Adds a z location driver for the plane to match the empty object
+1. Adds a x,y scale driver for the plane to fill the camera's view based on its angle and the distance of the empty object to the camera.
 
 ## properties.json
 
 A valid CAMP directory includes a properties.json file, such as this:
 ```
 {
-    "version": "1.2", 
+    "version": "1.3", 
     "type": "image", 
     "name": "example1", 
     "diffuse": "example1_diffuse.jpg", 
     "mask": "example1_mask.jpg", 
-    "normal": "example1_normal.jpg"
+    "normal": "example1_normal.jpg",
 }
 ```
 The "type" can be either "image" or "movie", and the referenced media files should be present in the directory. The "mask" and "normal" entries are optional, but "diffuse" is required. If shot in a flat/diffuse lighting environment, the original image/movie file can be used as the diffuse material.
