@@ -63,6 +63,8 @@ class ImportCamp(bpy.types.Operator, bpy_extras.io_utils.ImportHelper):
         
         if 'depth' in props:
             self.add_depth_keyframes(props['depth'], foreground_depth)
+        else:
+            self.set_depth(foreground_depth, -3.0) # default
             
         if self.background_boolean:
             # create background_plane
@@ -80,6 +82,8 @@ class ImportCamp(bpy.types.Operator, bpy_extras.io_utils.ImportHelper):
             
             if 'depth' in props:
                 self.add_depth_keyframes(props['depth'], background_depth, 'bg')
+            else:
+                self.set_depth(background_depth, -6.0) # default
                
         return {'FINISHED'}
     
@@ -228,6 +232,9 @@ class ImportCamp(bpy.types.Operator, bpy_extras.io_utils.ImportHelper):
             parts = line.split(',') # typically [frame, fg, bg]
             empty.location = (0, 0, -float(parts[column_index]))
             empty.keyframe_insert(data_path="location", frame = int(parts[0]) + 1) # blender frames start at 1, not 0
+            
+    def set_depth(self, empty, value):
+        empty.location = (0, 0, value)
     
 ### Registration of functionality
 
